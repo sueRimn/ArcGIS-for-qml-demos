@@ -60,20 +60,21 @@ ApplicationWindow {
                 var dis_end = GeometryEngine.project(dis_endPoint,spatialReference.createWgs84())
                 dis_endGraphic.geometry = dis_end
                 console.log(dis_endPoint)
+                //创建路径线
                 var polylineBuilder = ArcGISRuntimeEnvironment.createObject("PolylineBuilder", {spatialReference:SpatialReference.createWgs84()});
                 polylineBuilder.addPoints([dis_startGraphic.geometry,dis_endGraphic.geometry])
                 var polyline = polylineBuilder.geometry;
 
-                //确定终点后 开始计算距离
+                //生成路径线
                 var maxSegmentLength = 1;
                 var unitOfMeasurement = ArcGISRuntimeEnvironment.createObject("LinearUnit", {linearUnitId: Enums.LinearUnitIdKilometers});
                 var curveType = Enums.GeodeticCurveTypeGeodesic;
                 var pathGeometry = GeometryEngine.densifyGeodetic(polyline, maxSegmentLength, unitOfMeasurement, curveType);
 
                 pathGraphic.geometry = pathGeometry;
-
+                //计算距离
                 distanceText = GeometryEngine.lengthGeodetic(pathGeometry,unitOfMeasurement,curveType).toFixed(2)
-                console.log("polyline builded",distanceText_main + "km")
+                console.log("polyline builded",distanceText + "km")
             }
         }
     }
